@@ -1,9 +1,22 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import deleteImage from "../../assets/delete.svg";
 import editImage from "../../assets/edit.svg";
+import { useDeleteVideoMutation } from "../../redux/features/apiSlice/apiSlice";
 
 export default function Description({ video }) {
-  console.log(video);
+  const navigate = useNavigate();
+
+  const [deleteVideo, { isLoading, isSuccess }] = useDeleteVideoMutation();
+
+  const handleDelete = () => {
+    if (video.id) deleteVideo(video.id);
+  };
+
+  useEffect(() => {
+    if (isSuccess) navigate("/");
+  }, [isSuccess, navigate]);
+
   return (
     <div>
       <h1 className="text-lg font-semibold tracking-tight text-slate-800">{video.title}</h1>
@@ -21,7 +34,7 @@ export default function Description({ video }) {
               <span className="text-sm leading-[1.7142857] text-slate-600 cursor-pointer">Edit</span>
             </Link>
           </div>
-          <div className="flex gap-1">
+          <div disabled={isLoading} onClick={handleDelete} className="flex gap-1">
             <div className="shrink-0">
               <img className="w-5 block" src={deleteImage} alt="Delete" />
             </div>
