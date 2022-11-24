@@ -32,7 +32,7 @@ export default function Video() {
               <Player video={data} />
               <Description video={data} />
             </div>
-            <RelatedVideos video={data} />
+            <RelatedVideos title={data.title} videoId={data.id} />
           </div>
         </div>
       </section>
